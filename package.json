@@ -1,0 +1,39 @@
+{
+  "name": "star-map",
+  "version": "0.1.0",
+  "description": "A package to parse files and folders to configuration",
+  "main": "lib/starmap.js",
+  "scripts": {
+    "test": "jest --config config.jest.json --coverage",
+    "test:dev": "jest --config config.jest.json --watch",
+    "lint": "eslint --config .eslintrc src",
+    "lint:fix": "eslint --config .eslintrc src --fix",
+    "coveralls": "cat coverage/lcov.info | coveralls"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/monumentum/star-map.git"
+  },
+  "keywords": [
+    "configuration",
+    "node",
+    "es6",
+    "parser",
+    "astrostack"
+  ],
+  "author": "Guilherme Diego <guilherme@monumentum.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/monumentum/star-map/issues"
+  },
+  "homepage": "https://github.com/monumentum/star-map#readme",
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "coveralls": "^3.0.0",
+    "eslint": "^4.7.0",
+    "jest": "^21.2.1"
+  }
+}

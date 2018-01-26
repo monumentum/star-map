@@ -1,0 +1,7 @@
+test
+config.jest.json
+.travis.yml
+coverage
+.eslintrc
+.gitignore
+.git
