@@ -29,7 +29,8 @@
   "homepage": "https://github.com/monumentum/star-map#readme",
   "dependencies": {
     "bluebird": "^3.5.1",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "tarjan-graph": "^1.0.1"
   },
   "devDependencies": {
     "coveralls": "^3.0.0",

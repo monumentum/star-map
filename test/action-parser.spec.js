@@ -48,6 +48,17 @@ describe('Action Parser', () => {
         });
     });
 
+    it('should parsex correctly only an item', () => {
+        const file = `${__dirname}/__mocks__/file.js`;
+        const prop = 'test';
+        const fakeConfig = { test: 1 };
+        const parser = (func, config) => func(prop) + config.test;
+
+        return actionParser({ file, prop, track: true, parser}, fakeConfig).then(config => {
+            expect(config).toEqual({ [prop]: originalFunc(prop) + fakeConfig.test });
+        });
+    });
+
     it('should parsex correclty total dir', () => {
         const file = `${__dirname}/__mocks__/`;
         const prop = 'test';

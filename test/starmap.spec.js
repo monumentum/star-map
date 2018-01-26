@@ -22,6 +22,7 @@ describe('Star Map', () => {
             prop: fakeOpts.star,
             track: fakeOpts.constelation,
             parse: fakeOpts.strategy,
+            wait: [],
         });
     });
 
@@ -30,7 +31,8 @@ describe('Star Map', () => {
 
         starMap.add(fileName, fakeOpts);
         expect(starMap._pipe).toHaveProperty('0', Object.assign({
-            file: fileName
+            file: fileName,
+            wait: []
         }, fakeOpts));
     });
 
@@ -66,7 +68,31 @@ describe('Star Map', () => {
     });
 
     it('should exec build method correctly', () => {
-        const fakePipe = [ 'foo', 'bar' ];
+        const fakePipe = [{
+            prop: 'foo',
+            wait: []
+        }, {
+            prop: 'zoo',
+            wait: []
+        }, {
+            prop: 'too',
+            wait: []
+        }, {
+            prop: 'bar',
+            wait: [ 'foo' ]
+        }, , {
+            prop: 'oo',
+            wait: [ 'zoo', 'too' ]
+        }, {
+            prop: 'fuu',
+            wait: [ 'foo' ]
+        }, {
+            prop: 'foobar',
+            wait: [ 'bar' ]
+        }, {
+            prop: 'truzar',
+            wait: [ 'zoo', 'bar' ]
+        }];
 
         actionParser.mockReturnValue(Promise.resolve('hey'));
         starMap._pipe = fakePipe;
