@@ -1,6 +1,6 @@
 {
   "name": "star-mapper",
-  "version": "0.2.0",
+  "version": "0.4.0",
   "description": "A package to parse files and folders to configuration",
   "main": "lib/starmap.js",
   "scripts": {
