@@ -13,27 +13,83 @@ describe('Star Map', () => {
     });
 
     it('should add a StarMap parsex correctly with alias', () => {
-        const fakeOpts = { 'star': 'file', 'constelation': 'y', 'strategy': 'y'}
-        const starMap = new StarMap(fakeMap);
+        const fakeOpts = { 'star': 'file', 'strategy': 'y'}
 
         starMap.parsex(fileName, fakeOpts);
         expect(starMap._pipe).toHaveProperty('0', {
             file: fileName,
             prop: fakeOpts.star,
-            track: fakeOpts.constelation,
             parse: fakeOpts.strategy,
             wait: [],
         });
     });
 
+    it('should add a StarMap constelation correctly', () => {
+        const specificWait = 'foo';
+        const generalWait = 'bar';
+        const fakeStarOne = { star: 'file', strategy: 'y' }
+        const fakeStarTwo = { star: 'folder', strategy: 'y', wait: [specificWait] }
+
+        const fakeOpts = {
+            'wait': [generalWait],
+            'constelation': [
+                fakeStarOne, fakeStarTwo
+            ]
+        }
+
+        starMap.parsex(fileName, fakeOpts);
+        expect(starMap._pipe).toHaveProperty('0', {
+            file: fileName,
+            prop: fakeStarOne.star,
+            parse: fakeStarOne.strategy,
+            wait: [ generalWait ],
+        });
+
+        expect(starMap._pipe).toHaveProperty('1', {
+            file: fileName,
+            prop: fakeStarTwo.star,
+            parse: fakeStarTwo.strategy,
+            wait: [ specificWait, generalWait ],
+        });
+    });
+
     it('should add a StarMap parsex correctly', () => {
-        const fakeOpts = { 'prop': 'file', 'track': 'y', 'parse': 'y'}
+        const fakeOpts = { 'prop': 'file', 'parse': 'y'}
 
         starMap.add(fileName, fakeOpts);
         expect(starMap._pipe).toHaveProperty('0', Object.assign({
             file: fileName,
             wait: []
         }, fakeOpts));
+    });
+
+    it('should add a StarMap multi correctly wout alias', () => {
+        const specificWait = 'foo';
+        const generalWait = 'bar';
+        const fakeStarOne = { prop: 'file', parse: 'y' }
+        const fakeStarTwo = { prop: 'folder', parse: 'y', wait: [specificWait] }
+
+        const fakeOpts = {
+            'wait': [generalWait],
+            'multi': [
+                fakeStarOne, fakeStarTwo
+            ]
+        }
+
+        starMap.add(fileName, fakeOpts);
+        expect(starMap._pipe).toHaveProperty('0', {
+            file: fileName,
+            prop: fakeStarOne.prop,
+            parse: fakeStarOne.parse,
+            wait: [ generalWait ],
+        });
+
+        expect(starMap._pipe).toHaveProperty('1', {
+            file: fileName,
+            prop: fakeStarTwo.prop,
+            parse: fakeStarTwo.parse,
+            wait: [ specificWait, generalWait ],
+        });
     });
 
     it('should throw and error if miss prop or star', () => {
