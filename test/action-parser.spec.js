@@ -41,9 +41,9 @@ describe('Action Parser', () => {
     it('should parsex correctly only an item', () => {
         const file = `${__dirname}/__mocks__/file.js`;
         const prop = 'test';
-        const parser = func => func(prop);
+        const parser = path => require(path)(prop);
 
-        return actionParser({ file, prop, track: true, parser}).then(config => {
+        return actionParser({ file, prop, parser}).then(config => {
             expect(config).toEqual({ [prop]: originalFunc(prop) });
         });
     });
@@ -51,10 +51,19 @@ describe('Action Parser', () => {
     it('should parsex correctly only an item', () => {
         const file = `${__dirname}/__mocks__/file.js`;
         const prop = 'test';
-        const fakeConfig = { test: 1 };
-        const parser = (func, config) => func(prop) + config.test;
 
-        return actionParser({ file, prop, track: true, parser}, fakeConfig).then(config => {
+        return actionParser({ file, prop }).then(config => {
+            expect(config).toEqual({ [prop]: file });
+        });
+    });
+
+    it('should parsex correctly only configured item', () => {
+        const file = `${__dirname}/__mocks__/file.js`;
+        const prop = 'test';
+        const fakeConfig = { test: 1 };
+        const parser = (path, config) => require(path)(prop) + config.test;
+
+        return actionParser({ file, prop, parser }, fakeConfig).then(config => {
             expect(config).toEqual({ [prop]: originalFunc(prop) + fakeConfig.test });
         });
     });
@@ -63,7 +72,7 @@ describe('Action Parser', () => {
         const file = `${__dirname}/__mocks__/`;
         const prop = 'test';
 
-        return actionParser({ file, prop }).then(config => {
+        return actionParser({ file, prop, parser: require }).then(config => {
             expect(config).toEqual({
                 [prop]: {
                     foo: { bar: originalBar },
