@@ -81,4 +81,46 @@ describe('Action Parser', () => {
             });
         });
     });
+
+    it('should parsex correclty total dir with skip', () => {
+        const file = `${__dirname}/__mocks__/`;
+        const prop = 'test';
+
+        return actionParser({ file, prop, skip: 'file.js', parser: require }).then(config => {
+            expect(config).toEqual({
+                [prop]: {
+                    foo: { bar: originalBar },
+                }
+            });
+        });
+    });
+
+    it('should parsex correclty with > alias', () => {
+        const file = `${__dirname}/__mocks__/`;
+        const prop = 'test';
+        const skip = 'foo'
+        const fakeConfig = {
+            file, prop, skip
+        };
+
+        return actionParser({ file: '> file', prop: '>prop', skip: '>  skip', parser: require }, fakeConfig).then(config => {
+            expect(config).toEqual({
+                [prop]: {
+                    file: originalFunc
+                }
+            });
+        });
+    });
+
+    it('should parsex correclty with > alias that isn`t a file', () => {
+        const file = [ 1, 2 ];
+        const prop = 'test';
+        const parser = items => items.map(n => n + 1);
+
+        return actionParser({ file, prop, parser }).then(config => {
+            expect(config).toEqual({
+                [prop]: [ 2, 3 ]
+            });
+        });
+    });
 });

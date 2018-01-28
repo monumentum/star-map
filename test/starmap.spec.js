@@ -19,7 +19,7 @@ describe('Star Map', () => {
         expect(starMap._pipe).toHaveProperty('0', {
             file: fileName,
             prop: fakeOpts.star,
-            parse: fakeOpts.strategy,
+            parser: fakeOpts.strategy,
             wait: [],
         });
     });
@@ -41,20 +41,20 @@ describe('Star Map', () => {
         expect(starMap._pipe).toHaveProperty('0', {
             file: fileName,
             prop: fakeStarOne.star,
-            parse: fakeStarOne.strategy,
+            parser: fakeStarOne.strategy,
             wait: [ generalWait ],
         });
 
         expect(starMap._pipe).toHaveProperty('1', {
             file: fileName,
             prop: fakeStarTwo.star,
-            parse: fakeStarTwo.strategy,
+            parser: fakeStarTwo.strategy,
             wait: [ specificWait, generalWait ],
         });
     });
 
     it('should add a StarMap parsex correctly', () => {
-        const fakeOpts = { 'prop': 'file', 'parse': 'y'}
+        const fakeOpts = { 'prop': 'file', 'parser': 'y'}
 
         starMap.add(fileName, fakeOpts);
         expect(starMap._pipe).toHaveProperty('0', Object.assign({
@@ -66,8 +66,8 @@ describe('Star Map', () => {
     it('should add a StarMap multi correctly wout alias', () => {
         const specificWait = 'foo';
         const generalWait = 'bar';
-        const fakeStarOne = { prop: 'file', parse: 'y' }
-        const fakeStarTwo = { prop: 'folder', parse: 'y', wait: [specificWait] }
+        const fakeStarOne = { prop: 'file', parser: 'y' }
+        const fakeStarTwo = { prop: 'folder', parser: 'y', wait: [specificWait] }
 
         const fakeOpts = {
             'wait': [generalWait],
@@ -80,14 +80,14 @@ describe('Star Map', () => {
         expect(starMap._pipe).toHaveProperty('0', {
             file: fileName,
             prop: fakeStarOne.prop,
-            parse: fakeStarOne.parse,
+            parser: fakeStarOne.parser,
             wait: [ generalWait ],
         });
 
         expect(starMap._pipe).toHaveProperty('1', {
             file: fileName,
             prop: fakeStarTwo.prop,
-            parse: fakeStarTwo.parse,
+            parser: fakeStarTwo.parser,
             wait: [ specificWait, generalWait ],
         });
     });
