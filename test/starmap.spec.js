@@ -3,6 +3,9 @@ jest.mock('../lib/action-parser');
 const StarMap = require('../lib/starmap');
 const actionParser = require.requireMock('../lib/action-parser');
 
+const expectCalledWith = (wrap, index, args) =>
+    expect(wrap.mock.calls).toHaveProperty(index.toString(), args);
+
 describe('Star Map', () => {
     let starMap;
     const fileName = 'test';
@@ -135,6 +138,7 @@ describe('Star Map', () => {
     });
 
     it('should exec build method correctly', () => {
+        const fakeConfig = 'FakeHey';
         const fakePipe = [{
             prop: 'foo',
             wait: []
@@ -161,11 +165,15 @@ describe('Star Map', () => {
             wait: [ 'zoo', 'bar' ]
         }];
 
-        actionParser.mockReturnValue(Promise.resolve('hey'));
+        actionParser.mockReturnValue(Promise.resolve(fakeConfig));
         starMap._pipe = fakePipe;
 
         return starMap.build().then(config => {
-            expect(actionParser).toHaveBeenCalledTimes(fakePipe.length);
+            fakePipe.forEach((value, index) => {
+                expectCalledWith(actionParser, index, [
+                    value, index == 0 ? undefined : config
+                ]);
+            });
         });
     });
 });
