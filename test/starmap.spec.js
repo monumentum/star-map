@@ -8,8 +8,31 @@ describe('Star Map', () => {
     const fileName = 'test';
     const fakeMap = { file: {}, folder: {} };
 
+    const specificWait = 'foo';
+    const generalWait = 'bar';
+    const fakeStarOne = { prop: 'file', parser: 'y' }
+    const fakeStarTwo = { prop: 'folder', parser: 'y', wait: [specificWait] }
+    const fakeStarAlias = { 'star': 'file', 'strategy': 'y'}
+
+    const fakeMultiOpts = {
+        'wait': [generalWait],
+        'multi': [
+            fakeStarOne, fakeStarTwo
+        ]
+    }
+
     beforeEach(() => {
         starMap = new StarMap(fakeMap);
+    });
+
+    it('should back a chain from add/parsex', () => {
+        let holder;
+
+        [ fakeStarAlias, fakeStarOne, fakeMultiOpts ].forEach(opts => {
+            holder = starMap.parsex(fileName, opts);
+            expect(holder.parsex).toBeDefined();
+            expect(holder.add).toBeDefined();
+        });
     });
 
     it('should add a StarMap parsex correctly with alias', () => {
@@ -64,17 +87,6 @@ describe('Star Map', () => {
     });
 
     it('should add a StarMap multi correctly wout alias', () => {
-        const specificWait = 'foo';
-        const generalWait = 'bar';
-        const fakeStarOne = { prop: 'file', parser: 'y' }
-        const fakeStarTwo = { prop: 'folder', parser: 'y', wait: [specificWait] }
-
-        const fakeOpts = {
-            'wait': [generalWait],
-            'multi': [
-                fakeStarOne, fakeStarTwo
-            ]
-        }
 
         starMap.add(fileName, fakeOpts);
         expect(starMap._pipe).toHaveProperty('0', {
