@@ -10,14 +10,14 @@ describe('Star Map', () => {
 
     const specificWait = 'foo';
     const generalWait = 'bar';
-    const fakeStarOne = { prop: 'file', parser: 'y' }
+    const fakeStar = { prop: 'file', parser: 'y' }
     const fakeStarTwo = { prop: 'folder', parser: 'y', wait: [specificWait] }
     const fakeStarAlias = { 'star': 'file', 'strategy': 'y'}
 
     const fakeMultiOpts = {
         'wait': [generalWait],
         'multi': [
-            fakeStarOne, fakeStarTwo
+            fakeStar, fakeStarTwo
         ]
     }
 
@@ -28,7 +28,7 @@ describe('Star Map', () => {
     it('should back a chain from add/parsex', () => {
         let holder;
 
-        [ fakeStarAlias, fakeStarOne, fakeMultiOpts ].forEach(opts => {
+        [ fakeStarAlias, fakeStar, fakeMultiOpts ].forEach(opts => {
             holder = starMap.parsex(fileName, opts);
             expect(holder.parsex).toBeDefined();
             expect(holder.add).toBeDefined();
@@ -50,21 +50,21 @@ describe('Star Map', () => {
     it('should add a StarMap constelation correctly', () => {
         const specificWait = 'foo';
         const generalWait = 'bar';
-        const fakeStarOne = { star: 'file', strategy: 'y' }
+        const fakeStar = { star: 'file', strategy: 'y' }
         const fakeStarTwo = { star: 'folder', strategy: 'y', wait: [specificWait] }
 
         const fakeOpts = {
             'wait': [generalWait],
             'constelation': [
-                fakeStarOne, fakeStarTwo
+                fakeStar, fakeStarTwo
             ]
         }
 
         starMap.parsex(fileName, fakeOpts);
         expect(starMap._pipe).toHaveProperty('0', {
             file: fileName,
-            prop: fakeStarOne.star,
-            parser: fakeStarOne.strategy,
+            prop: fakeStar.star,
+            parser: fakeStar.strategy,
             wait: [ generalWait ],
         });
 
@@ -87,12 +87,11 @@ describe('Star Map', () => {
     });
 
     it('should add a StarMap multi correctly wout alias', () => {
-
-        starMap.add(fileName, fakeOpts);
+        starMap.add(fileName, fakeMultiOpts);
         expect(starMap._pipe).toHaveProperty('0', {
             file: fileName,
-            prop: fakeStarOne.prop,
-            parser: fakeStarOne.parser,
+            prop: fakeStar.prop,
+            parser: fakeStar.parser,
             wait: [ generalWait ],
         });
 
