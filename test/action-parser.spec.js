@@ -83,7 +83,7 @@ describe('Action Parser', () => {
     });
 
     it('should parsex correclty total dir with skip', () => {
-        const file = `/test/__mocks__/`;
+        const file = `test/__mocks__/`;
         const prop = 'test';
 
         return actionParser({ file, prop, skip: 'file.js', parser: require }).then(config => {
