@@ -83,7 +83,7 @@ describe('Action Parser', () => {
     });
 
     it('should parsex correclty total dir with skip', () => {
-        const file = `${__dirname}/__mocks__/`;
+        const file = `/test/__mocks__/`;
         const prop = 'test';
 
         return actionParser({ file, prop, skip: 'file.js', parser: require }).then(config => {
@@ -97,14 +97,16 @@ describe('Action Parser', () => {
 
     it('should parsex correclty with > alias', () => {
         const file = `${__dirname}/__mocks__/`;
+        const appProp = 'app';
         const prop = 'test';
         const skip = 'foo'
         const fakeConfig = {
-            file, prop, skip
+            [appProp]: { file, prop, skip }
         };
 
-        return actionParser({ file: '> file', prop: '>prop', skip: '>  skip', parser: require }, fakeConfig).then(config => {
+        return actionParser({ file: '> app.file', prop: '>app.prop', skip: '>  app.skip', parser: require }, fakeConfig).then(config => {
             expect(config).toEqual({
+                [appProp]: fakeConfig.app,
                 [prop]: {
                     file: originalFunc
                 }
