@@ -85,12 +85,25 @@ describe('Action Parser', () => {
     it('should parsex correclty total dir with skip', () => {
         const file = `test/__mocks__/`;
         const prop = 'test';
+        const opts = { skip: 'file.js' };
 
-        return actionParser({ file, prop, skip: 'file.js', parser: require }).then(config => {
+        return actionParser({ file, prop, opts, parser: require }).then(config => {
             expect(config).toEqual({
                 [prop]: {
                     foo: { bar: originalBar },
                 }
+            });
+        });
+    });
+
+    it('should parsex correclty total dir with only', () => {
+        const file = `test/__mocks__/`;
+        const prop = 'test';
+        const opts = { only: 'file.js' };
+
+        return actionParser({ file, prop, opts, parser: require }).then(config => {
+            expect(config).toEqual({
+                [prop]: originalFunc
             });
         });
     });
@@ -100,11 +113,12 @@ describe('Action Parser', () => {
         const appProp = 'app';
         const prop = 'test';
         const skip = 'foo'
+        const opts = { skip: '>  app.skip' };
         const fakeConfig = {
             [appProp]: { file, prop, skip }
         };
 
-        return actionParser({ file: '> app.file', prop: '>app.prop', skip: '>  app.skip', parser: require }, fakeConfig).then(config => {
+        return actionParser({ file: '> app.file', prop: '>app.prop', opts, parser: require }, fakeConfig).then(config => {
             expect(config).toEqual({
                 [appProp]: fakeConfig.app,
                 [prop]: {

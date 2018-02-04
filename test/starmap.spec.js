@@ -10,7 +10,7 @@ describe('Star Map', () => {
     let starMap;
     const fileName = 'test';
     const fakeMap = { file: {}, folder: {} };
-
+    const opts = { skip: undefined, only: undefined }
     const specificWait = 'foo';
     const generalWait = 'bar';
     const fakeStar = { prop: 'file', parser: 'y' }
@@ -47,6 +47,7 @@ describe('Star Map', () => {
             prop: fakeOpts.star,
             parser: fakeOpts.strategy,
             wait: [],
+            opts
         });
     });
 
@@ -69,6 +70,7 @@ describe('Star Map', () => {
             prop: fakeStar.star,
             parser: fakeStar.strategy,
             wait: [ generalWait ],
+            opts,
         });
 
         expect(starMap._pipe).toHaveProperty('1', {
@@ -76,6 +78,7 @@ describe('Star Map', () => {
             prop: fakeStarTwo.star,
             parser: fakeStarTwo.strategy,
             wait: [ specificWait, generalWait ],
+            opts,
         });
     });
 
@@ -85,7 +88,8 @@ describe('Star Map', () => {
         starMap.add(fileName, fakeOpts);
         expect(starMap._pipe).toHaveProperty('0', Object.assign({
             file: fileName,
-            wait: []
+            wait: [],
+            opts
         }, fakeOpts));
     });
 
@@ -96,6 +100,7 @@ describe('Star Map', () => {
             prop: fakeStar.prop,
             parser: fakeStar.parser,
             wait: [ generalWait ],
+            opts
         });
 
         expect(starMap._pipe).toHaveProperty('1', {
@@ -103,6 +108,7 @@ describe('Star Map', () => {
             prop: fakeStarTwo.prop,
             parser: fakeStarTwo.parser,
             wait: [ specificWait, generalWait ],
+            opts
         });
     });
 
