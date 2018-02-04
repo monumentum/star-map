@@ -3,8 +3,7 @@ jest.mock('../lib/action-parser');
 const StarMap = require('../lib/starmap');
 const actionParser = require.requireMock('../lib/action-parser');
 
-const expectCalledWith = (wrap, index, args) =>
-    expect(wrap.mock.calls).toHaveProperty(index.toString(), args);
+const { sortBy, compact } = require('lodash');
 
 describe('Star Map', () => {
     let starMap;
@@ -93,6 +92,17 @@ describe('Star Map', () => {
         }, fakeOpts));
     });
 
+    it('should run method exec correctly', () => {
+        const fakeResponse = 'FAKE';
+        const callback = 'callback';
+
+        starMap.exec(callback);
+
+        expect(starMap._pipe[0]).toHaveProperty('prop');
+        expect(starMap._pipe[0]).toHaveProperty('wait', []);
+        expect(starMap._pipe[0]).toHaveProperty('fn', callback);
+    });
+
     it('should add a StarMap multi correctly wout alias', () => {
         starMap.add(fileName, fakeMultiOpts);
         expect(starMap._pipe).toHaveProperty('0', {
@@ -144,6 +154,7 @@ describe('Star Map', () => {
     });
 
     it('should exec build method correctly', () => {
+        const mutateSpy = jest.fn();
         const fakeConfig = 'FakeHey';
         const fakePipe = [{
             prop: 'foo',
@@ -157,7 +168,11 @@ describe('Star Map', () => {
         }, {
             prop: 'bar',
             wait: [ 'foo' ]
-        }, , {
+        },{
+            prop: 'JDJI213',
+            wait: [],
+            fn: mutateSpy
+        },{
             prop: 'oo',
             wait: [ 'zoo', 'too' ]
         }, {
@@ -171,15 +186,14 @@ describe('Star Map', () => {
             wait: [ 'zoo', 'bar' ]
         }];
 
+
+        mutateSpy.mockReturnValue(Promise.resolve());
         actionParser.mockReturnValue(Promise.resolve(fakeConfig));
         starMap._pipe = fakePipe;
 
         return starMap.build().then(config => {
-            fakePipe.forEach((value, index) => {
-                expectCalledWith(actionParser, index, [
-                    value, index == 0 ? undefined : config
-                ]);
-            });
+            expect(mutateSpy).toHaveBeenCalledTimes(1)
+            expect(actionParser).toHaveBeenCalledTimes(fakePipe.length - 1);
         });
     });
 });
