@@ -1,6 +1,6 @@
 {
   "name": "star-mapper",
-  "version": "0.5.9",
+  "version": "0.5.10",
   "description": "A package to parse files and folders to configuration",
   "main": "lib/starmap.js",
   "scripts": {
@@ -30,7 +30,8 @@
   "dependencies": {
     "bluebird": "^3.5.1",
     "lodash": "^4.17.4",
-    "tarjan-graph": "^1.0.1"
+    "tarjan-graph": "^1.0.1",
+    "uuid": "^3.2.1"
   },
   "devDependencies": {
     "coveralls": "^3.0.0",
