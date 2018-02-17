@@ -48,6 +48,18 @@ describe('Action Parser', () => {
         });
     });
 
+    it('should parsex correctly when lstat back an throw and onFalsy true', () => {
+        const error = 'fakeError';
+        const opts = { onFalsy: 'something' };
+        const prop = 'test';
+
+        response.lstat.error = error;
+
+        return actionParser({ file: undefined, prop, opts }).then(config => {
+            expect(config).toEqual({ [prop]: opts.onFalsy });
+        });
+    });
+
     it('should parsex correctly only an item', () => {
         const file = `${__dirname}/__mocks__/file.js`;
         const prop = 'test';
